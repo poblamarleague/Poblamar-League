@@ -1,132 +1,142 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Poblamar League</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to bottom, #e0f7fa, #ffffff);
-      margin: 0;
-      padding: 20px;
-      color: #333;
-    }
+<meta charset="UTF-8">
+<title>Poblamar League</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #ffffff;
+  margin: 0;
+  padding: 20px;
+  color: #000000;
+}
 
-    h1 {
-      text-align: center;
-      color: #00796b;
-      margin-bottom: 20px;
-    }
+h1 {
+  text-align: center;
+  color: #000000;
+  margin-bottom: 20px;
+}
 
-    .filters {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 25px;
-    }
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 25px;
+}
 
-    input, select {
-      padding: 8px 12px;
-      font-size: 14px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
+input, select {
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 15px;
-    }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 15px;
+}
 
-    .card {
-      background: #ffffff;
-      border-radius: 12px;
-      padding: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
+.card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
 
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    }
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
 
-    .card img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      border-radius: 50%;
-      margin-bottom: 10px;
-      border: 3px solid #00796b;
-    }
+.card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
 
-    .card h3 {
-      margin: 5px 0;
-      text-align: center;
-      color: #004d40;
-    }
+.card h3 {
+  margin: 5px 0;
+  text-align: center;
+  color: #000000;
+}
 
-    .stats {
-      font-size: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
+.stats {
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
 
-    .progress {
-      height: 8px;
-      background: #e0e0e0;
-      border-radius: 4px;
-      overflow: hidden;
-      margin-top: 5px;
-    }
+.points-square {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+}
 
-    .progress-bar {
-      height: 100%;
-      background: #00796b;
-      width: 0%;
-      transition: width 0.5s;
-    }
+.mvp-flames {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 50px;
+  height: 50px;
+  background: url('https://i.ibb.co/ckd6F0k/flames.gif') no-repeat center/cover;
+  pointer-events: none;
+}
 
-    /* Modal */
-    .modal {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.6);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      padding: 10px;
-    }
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
 
-    .modal-content {
-      background: #ffffff;
-      border-radius: 12px;
-      max-width: 400px;
-      width: 100%;
-      padding: 20px;
-      position: relative;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-    }
+.modal-content {
+  background: #ffffff;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 100%;
+  padding: 20px;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
 
-    .close {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-weight: bold;
-      font-size: 18px;
-      cursor: pointer;
-      color: #00796b;
-    }
-  </style>
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-weight: bold;
+  font-size: 18px;
+  cursor: pointer;
+  color: #000000;
+}
+</style>
 </head>
 <body>
 
-<h1>POBLAMAR LEAGUE</h1>
+<h1>Poblamar League</h1>
 
 <div class="filters">
   <input type="text" id="searchName" placeholder="Buscar jugador...">
@@ -155,71 +165,73 @@
 
 <script>
 const players = [
-  {nombre: "Toni Valls", edad: 19, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 0, foto: "https://via.placeholder.com/300x300?text=TV"},
-  {nombre: "Unai Martinez", edad: 19, posicion: "Delantero", goles: 1, asistencias: 0, mvps: 0, puntos: 6, foto: "https://via.placeholder.com/300x300?text=UM"},
-  {nombre: "Sergio Jiménez", edad: 19, posicion: "Delantero", goles: 0, asistencias: 0, mvps: 0, puntos: 0, foto: "https://via.placeholder.com/300x300?text=SJ"},
-  {nombre: "Jaime del Rio", edad: 19, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 0, foto: "https://via.placeholder.com/300x300?text=JR"},
-  {nombre: "Hicham", edad: 19, posicion: "Defensa", goles: 0, asistencias: 0, mvps: 0, puntos: 0, foto: "https://via.placeholder.com/300x300?text=H"},
-  {nombre: "Sergi Castaño", edad: 19, posicion: "Delantero", goles: 0, asistencias: 0, mvps: 0, puntos: 0, foto: "https://via.placeholder.com/300x300?text=SC"},
-  {nombre: "David Fernandez", edad: 19, posicion: "Defensa/Centrocampista/Delantero", goles: 0, asistencias: 0, mvps: 0, puntos: 0, foto: "https://via.placeholder.com/300x300?text=DF"},
-  {nombre: "Eloi Rey", edad: 19, posicion: "Defensa", goles: 0, asistencias: 0, mvps: 0, puntos: 0, foto: "https://via.placeholder.com/300x300?text=ER"},
-  {nombre: "Axel", edad: 18, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 0, foto: "https://via.placeholder.com/300x300?text=A"},
-  {nombre: "Arnau Castaño", edad: 17, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 0, foto: "https://via.placeholder.com/300x300?text=AC"},
-  {nombre: "Jose Romero", edad: 16, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 0, foto: "https://via.placeholder.com/300x300?text=JR"},
-  {nombre: "Marc Gutta", edad: 19, posicion: "Defensa", goles: 0, asistencias: 0, mvps: 0, puntos: 0, foto: "https://via.placeholder.com/300x300?text=MG"},
-  {nombre: "Ibu", edad: 19, posicion: "Defensa", goles: 0, asistencias: 0, mvps: 0, puntos: 0, foto: "https://via.placeholder.com/300x300?text=I"},
-  {nombre: "Moha", edad: 19, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 0, foto: "https://via.placeholder.com/300x300?text=M"},
-  {nombre: "Gerard", edad: 19, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 0, foto: "https://via.placeholder.com/300x300?text=G"},
-  {nombre: "Jan Martínez", edad: 19, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 0, foto: "https://via.placeholder.com/300x300?text=JM"},
-  {nombre: "Aitor Borrallo", edad: 19, posicion: "Delantero", goles: 0, asistencias: 0, mvps: 0, puntos: 0, foto: "https://via.placeholder.com/300x300?text=AB"}
+  {nombre: "Toni", apellido: "Valls", edad: 19, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "https://via.placeholder.com/300x300?text=TV"},
+  {nombre: "Unai", apellido: "Martinez", edad: 19, posicion: "Delantero", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "https://via.placeholder.com/300x300?text=UM"},
+  {nombre: "Sergio", apellido: "Jiménez", edad: 19, posicion: "Delantero", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "https://via.placeholder.com/300x300?text=SJ"},
+  {nombre: "Jaime", apellido: "del Rio", edad: 19, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "https://via.placeholder.com/300x300?text=JR"},
+  {nombre: "Hicham", apellido: "", edad: 19, posicion: "Defensa", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "https://via.placeholder.com/300x300?text=H"},
+  {nombre: "Sergi", apellido: "Castaño", edad: 19, posicion: "Delantero", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "https://via.placeholder.com/300x300?text=SC"},
+  {nombre: "David", apellido: "Fernandez", edad: 19, posicion: "Defensa/Centrocampista/Delantero", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "https://via.placeholder.com/300x300?text=DF"},
+  {nombre: "Eloi", apellido: "Rey", edad: 19, posicion: "Defensa", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "https://via.placeholder.com/300x300?text=ER"},
+  {nombre: "Axel", apellido: "", edad: 18, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "https://via.placeholder.com/300x300?text=A"},
+  {nombre: "Arnau", apellido: "Castaño", edad: 17, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "https://via.placeholder.com/300x300?text=AC"},
+  {nombre: "Jose", apellido: "Romero", edad: 16, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "https://via.placeholder.com/300x300?text=JR"},
+  {nombre: "Marc", apellido: "Gutta", edad: 19, posicion: "Defensa", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "https://via.placeholder.com/300x300?text=MG"},
+  {nombre: "Ibu", apellido: "", edad: 19, posicion: "Defensa", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "https://via.placeholder.com/300x300?text=I"},
+  {nombre: "Moha", apellido: "", edad: 19, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "https://via.placeholder.com/300x300?text=M"},
+  {nombre: "Gerard", apellido: "", edad: 19, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "https://via.placeholder.com/300x300?text=G"},
+  {nombre: "Jan", apellido: "Martínez", edad: 19, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "https://via.placeholder.com/300x300?text=JM"},
+  {nombre: "Aitor", apellido: "Borrallo", edad: 19, posicion: "Delantero", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "https://via.placeholder.com/300x300?text=AB"}
 ];
 
-const grid = document.getElementById("playersGrid");
-const filterPosition = document.getElementById("filterPosition");
-const sortPoints = document.getElementById("sortPoints");
-const searchName = document.getElementById("searchName");
+function puntosColor(p){
+  if(p<=-1) return '#f44336';
+  if(p<=2) return '#ff9800';
+  if(p<=6) return '#4caf50';
+  return '#2196f3';
+}
 
-function renderPlayers(list) {
+const grid = document.getElementById('playersGrid');
+const filterPosition = document.getElementById('filterPosition');
+const sortPoints = document.getElementById('sortPoints');
+const searchName = document.getElementById('searchName');
+
+function renderPlayers(list){
   grid.innerHTML = '';
-  list.forEach(p => {
+  list.forEach(p=>{
     const card = document.createElement('div');
     card.className = 'card';
-    card.innerHTML = `
+    if(p.mvp) card.innerHTML+='<div class="mvp-flames"></div>';
+    card.innerHTML+=`
       <img src="${p.foto}" />
       <h3>${p.nombre}</h3>
       <div class="stats">
         <b>${p.posicion}</b>
-        <span>⚽ Goles: ${p.goles}</span>
-        <span>🎯 Asistencias: ${p.asistencias}</span>
-        <span>⭐ MVPs: ${p.mvps}</span>
-        <span>🏆 Puntos: ${p.puntos}</span>
-        <div class="progress">
-          <div class="progress-bar" style="width:${p.puntos}%"></div>
-        </div>
       </div>
+      <div class='points-square' style='background:${puntosColor(p.jornada)}'>${p.jornada}</div>
     `;
-    card.onclick = () => openModal(p);
+    card.onclick=()=>openModal(p);
     grid.appendChild(card);
   });
 }
 
-function applyFilters() {
+function applyFilters(){
   let filtered = [...players];
-  if(filterPosition.value) filtered = filtered.filter(p => p.posicion.includes(filterPosition.value));
-  if(searchName.value) filtered = filtered.filter(p => p.nombre.toLowerCase().includes(searchName.value.toLowerCase()));
-  if(sortPoints.value) {
+  if(filterPosition.value) filtered=filtered.filter(p=>p.posicion.includes(filterPosition.value));
+  if(searchName.value) filtered=filtered.filter(p=>p.nombre.toLowerCase().includes(searchName.value.toLowerCase()));
+  if(sortPoints.value){
     filtered.sort((a,b)=>sortPoints.value==='desc'?b.puntos-a.puntos:a.puntos-b.puntos);
   }
   renderPlayers(filtered);
 }
 
-filterPosition.onchange = applyFilters;
-sortPoints.onchange = applyFilters;
-searchName.oninput = applyFilters;
+filterPosition.onchange=applyFilters;
+sortPoints.onchange=applyFilters;
+searchName.oninput=applyFilters;
 
 function openModal(p){
-  document.getElementById('modalBody').innerHTML = `
-    <h2>${p.nombre}</h2>
+  document.getElementById('modalBody').innerHTML=`
+    <h2>${p.nombre} ${p.apellido}</h2>
     <p><b>Edad:</b> ${p.edad}</p>
     <p><b>Posición:</b> ${p.posicion}</p>
     <p><b>Goles:</b> ${p.goles}</p>
@@ -229,7 +241,6 @@ function openModal(p){
   `;
   document.getElementById('playerModal').style.display='flex';
 }
-
 function closeModal(){
   document.getElementById('playerModal').style.display='none';
 }
