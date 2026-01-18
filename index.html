@@ -171,20 +171,23 @@ input, select {
 
 <script>
 const players = [
-  {nombre:"Toni", apellido:"Valls", edad:19, posicion:"Centrocampista", goles:4, asistencias:4, mvps:0, puntos:21, jornada:21, mvp:false, amarillas:0, rojas:0, foto:"img/Toni.png"},
-  {nombre:"Unai", apellido:"Martinez", edad:19, posicion:"Delantero", goles:0, asistencias:1, mvps:0, puntos:1, jornada:1, mvp:false, amarillas:0, rojas:0, foto:"img/Unai.png"},
-  {nombre:"Sergio", apellido:"Jiménez", edad:19, posicion:"Delantero", goles:1, asistencias:0, mvps:0, puntos:4, jornada:4, mvp:false, amarillas:1, rojas:0, foto:"img/Sergio.png"},
-  {nombre:"Jaime", apellido:"del Rio", edad:19, posicion:"Centrocampista", goles:2, asistencias:1, mvps:0, puntos:12, jornada:12, mvp:false, amarillas:1, rojas:0, foto:"img/Jaime.png"},
-  {nombre:"Hicham", apellido:"", edad:19, posicion:"Defensa", goles:1, asistencias:0, mvps:0, puntos:5, jornada:5, mvp:false, amarillas:0, rojas:0, foto:"img/Hicham.png"},
-  {nombre:"Sergi", apellido:"Castaño", edad:19, posicion:"Delantero", goles:3, asistencias:2, mvps:0, puntos:17, jornada:17, mvp:false, amarillas:0, rojas:0, foto:"img/Sergi.png"},
-  {nombre:"David", apellido:"Fernandez", edad:19, posicion:"Centrocampista", goles:2, asistencias:5, mvps:1, puntos:20, jornada:20, mvp:true, amarillas:1, rojas:0, foto:"img/David.png"},
-  {nombre:"Eloi", apellido:"Rey", edad:19, posicion:"Defensa", goles:2, asistencias:0, mvps:0, puntos:12, jornada:12, mvp:false, amarillas:1, rojas:0, foto:"img/Eloi2.png"},
-  {nombre:"Axel", apellido:"", edad:18, posicion:"Centrocampista", goles:2, asistencias:0, mvps:0, puntos:7, jornada:7, mvp:false, amarillas:2, rojas:0, foto:"img/sinfoto2.png"},
-  {nombre:"Arnau", apellido:"Castaño", edad:17, posicion:"Centrocampista", goles:2, asistencias:0, mvps:0, puntos:11, jornada:11, mvp:false, amarillas:0, rojas:0, foto:"img/Arnau.png"},
-  {nombre:"Jose", apellido:"Romero", edad:16, posicion:"Centrocampista", goles:0, asistencias:0, mvps:0, puntos:1, jornada:1, mvp:false, amarillas:0, rojas:0, foto:"img/Jose.png"},
-  {nombre:"Marc", apellido:"Gutta", edad:19, posicion:"Defensa", goles:0, asistencias:1, mvps:0, puntos:4, jornada:4, mvp:false, amarillas:1, rojas:0, foto:"img/Marc.png"},
-  {nombre:"Ibu", apellido:"", edad:19, posicion:"Defensa", goles:0, asistencias:2, mvps:0, puntos:4, jornada:4, mvp:false, amarillas:0, rojas:0, foto:"img/sinfoto2.png"},
-  {nombre:"Moha", apellido:"", edad:19, posicion:"Centrocampista", goles:0, asistencias:0, mvps:0, puntos:-3, jornada:-3, mvp:false, amarillas:3, rojas:1, foto:"img/Moha.png"}
+  {nombre:"Toni",apellido:"Valls",edad:19,posicion:"Centrocampista",goles:4,asistencias:4,mvps:0,puntos:21,jornada:21,mvp:false,amarillas:0,rojas:0,foto:"img/Toni.png"},
+  {nombre:"Unai",apellido:"Martinez",edad:19,posicion:"Delantero",goles:0,asistencias:1,mvps:0,puntos:1,jornada:1,mvp:false,amarillas:0,rojas:0,foto:"img/Unai.png"},
+  {nombre:"Sergio",apellido:"Jiménez",edad:19,posicion:"Delantero",goles:1,asistencias:0,mvps:0,puntos:4,jornada:4,mvp:false,amarillas:1,rojas:0,foto:"img/Sergio.png"},
+  {nombre:"Jaime",apellido:"del Rio",edad:19,posicion:"Centrocampista",goles:2,asistencias:1,mvps:0,puntos:12,jornada:12,mvp:false,amarillas:1,rojas:0,foto:"img/Jaime.png"},
+  {nombre:"Hicham",apellido:"",edad:19,posicion:"Defensa",goles:1,asistencias:0,mvps:0,puntos:5,jornada:5,mvp:false,amarillas:0,rojas:0,foto:"img/Hicham.png"},
+  {nombre:"Sergi",apellido:"Castaño",edad:19,posicion:"Delantero",goles:3,asistencias:2,mvps:0,puntos:17,jornada:17,mvp:false,amarillas:0,rojas:0,foto:"img/Sergi.png"},
+  {nombre:"David",apellido:"Fernandez",edad:19,posicion:"Centrocampista",goles:2,asistencias:5,mvps:1,puntos:20,jornada:20,mvp:true,amarillas:1,rojas:0,foto:"img/David.png"},
+  {nombre:"Eloi",apellido:"Rey",edad:19,posicion:"Defensa",goles:2,asistencias:0,mvps:0,puntos:12,jornada:12,mvp:false,amarillas:1,rojas:0,foto:"img/Eloi2.png"},
+  {nombre:"Axel",apellido:"",edad:18,posicion:"Centrocampista",goles:2,asistencias:0,mvps:0,puntos:7,jornada:7,mvp:false,amarillas:2,rojas:0,foto:"img/sinfoto2.png"},
+  {nombre:"Arnau",apellido:"Castaño",edad:17,posicion:"Centrocampista",goles:2,asistencias:0,mvps:0,puntos:11,jornada:11,mvp:false,amarillas:0,rojas:0,foto:"img/Arnau.png"},
+  {nombre:"Jose",apellido:"Romero",edad:16,posicion:"Centrocampista",goles:0,asistencias:0,mvps:0,puntos:1,jornada:1,mvp:false,amarillas:0,rojas:0,foto:"img/Jose.png"},
+  {nombre:"Marc",apellido:"Gutta",edad:19,posicion:"Defensa",goles:0,asistencias:1,mvps:0,puntos:4,jornada:4,mvp:false,amarillas:1,rojas:0,foto:"img/Marc.png"},
+  {nombre:"Ibu",apellido:"",edad:19,posicion:"Defensa",goles:0,asistencias:2,mvps:0,puntos:4,jornada:4,mvp:false,amarillas:0,rojas:0,foto:"img/sinfoto2.png"},
+  {nombre:"Moha",apellido:"",edad:19,posicion:"Centrocampista",goles:0,asistencias:0,mvps:0,puntos:-3,jornada:-3,mvp:false,amarillas:3,rojas:1,foto:"img/Moha.png"},
+  {nombre:"Gerard",apellido:"",edad:19,posicion:"Centrocampista",goles:1,asistencias:0,mvps:0,puntos:4,jornada:4,mvp:false,amarillas:0,rojas:0,foto:"img/sinfoto2.png"},
+  {nombre:"Jan",apellido:"Martínez",edad:19,posicion:"Centrocampista",goles:2,asistencias:1,mvps:0,puntos:10,jornada:10,mvp:false,amarillas:0,rojas:0,foto:"img/Jan.png"},
+  {nombre:"Aitor",apellido:"Borrallo",edad:19,posicion:"Delantero",goles:3,asistencias:1,mvps:0,puntos:18,jornada:18,mvp:false,amarillas:0,rojas:0,foto:"img/Aitor3.png"}
 ];
 
 function puntosColor(jugador){
