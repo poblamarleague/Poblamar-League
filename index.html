@@ -263,11 +263,11 @@ const players = [
 ];
 
 function puntosColor(jugador){
-  if (jugador.mvp) return '#ffeb3b';        // Amarillo para MVP
-  if (jugador.jornada < 1) return '#f44336'; // Rojo si no ha jugado
-  if (jugador.jornada <= 9) return '#4caf50'; // Verde si ha jugado menos de 10 jornadas
-  if (jugador.puntos >= 1 && jugador.puntos <= 5) return '#ff8000'; // Naranja si tiene entre 1 y 5 puntos
-  return '#2196f3'; // Azul por defecto
+  if (jugador.mvp) return '#ffeb3b';              // Amarillo para MVP
+  if (jugador.jornada < 1) return '#f44336';      // Rojo si no ha jugado
+  if (jugador.puntos >= 1 && jugador.puntos <= 5) return '#ff9800'; // Naranja si tiene entre 1 y 5 puntos
+  if (jugador.jornada <= 9) return '#4caf50';     // Verde si ha jugado menos de 10 jornadas
+  return '#2196f3';                               // Azul por defecto
 }
 
 
