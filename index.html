@@ -63,12 +63,12 @@ input, select {
 
 .card img {
   width: calc(100% - 16px);
-  height: 200px;
-  object-fit: cover;
-  margin: 8px auto 16px auto; /* centrada horizontal + menos margen abajo */
-  display: block;
-  border-radius: 8px;
+  height: 210px;
+  object-fit: contain;
+  margin: 6px auto 10px auto;
+  filter: drop-shadow(0 8px 10px rgba(0,0,0,0.4));
 }
+
 
 .card h3 {
   margin: -3px 5px 6px 5px;
@@ -178,7 +178,7 @@ input, select {
 
 <script>
 const players = [
-  {nombre: "Toni", apellido: "Valls", edad: 19, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "img/sinfoto.png"},
+  {nombre: "Toni", apellido: "Valls", edad: 19, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "img/Toni.png"},
   {nombre: "Unai", apellido: "Martinez", edad: 19, posicion: "Delantero", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 10, mvp: true, foto: "img/Unai.png"},
   {nombre: "Sergio", apellido: "Jiménez", edad: 19, posicion: "Delantero", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "img/Sergio.png"},
   {nombre: "Jaime", apellido: "del Rio", edad: 19, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "img/Jaime.png"},
@@ -186,13 +186,13 @@ const players = [
   {nombre: "Sergi", apellido: "Castaño", edad: 19, posicion: "Delantero", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "img/Sergi.png"},
   {nombre: "David", apellido: "Fernandez", edad: 19, posicion: "Defensa/Centrocampista/Delantero", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "img/David.png"},
   {nombre: "Eloi", apellido: "Rey", edad: 19, posicion: "Defensa", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "img/Eloi2.png"},
-  {nombre: "Axel", apellido: "", edad: 18, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "https://via.placeholder.com/500x500?text=A"},
+  {nombre: "Axel", apellido: "", edad: 18, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "img/sinfoto.png"},
   {nombre: "Arnau", apellido: "Castaño", edad: 17, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "img/Arnau.png"},
   {nombre: "Jose", apellido: "Romero", edad: 16, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "img/Jose.png"},
   {nombre: "Marc", apellido: "Gutta", edad: 19, posicion: "Defensa", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "img/Marc.png"},
-  {nombre: "Ibu", apellido: "", edad: 19, posicion: "Defensa", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "https://via.placeholder.com/500x500?text=I"},
+  {nombre: "Ibu", apellido: "", edad: 19, posicion: "Defensa", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "img/sinfoto.png"},
   {nombre: "Moha", apellido: "", edad: 19, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "img/Moha.png"},
-  {nombre: "Gerard", apellido: "", edad: 19, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "https://via.placeholder.com/500x500?text=G"},
+  {nombre: "Gerard", apellido: "", edad: 19, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "img/sinfoto.png"},
   {nombre: "Jan", apellido: "Martínez", edad: 19, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "img/Jan.png"},
   {nombre: "Aitor", apellido: "Borrallo", edad: 19, posicion: "Delantero", goles: 0, asistencias: 0, mvps: 0, puntos: 0, jornada: 0, mvp: false, foto: "img/Aitor3.png"}
 ];
