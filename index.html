@@ -209,7 +209,6 @@ input, select {
     padding: 15px;
   }
 }
-
 </style>
 </head>
 
@@ -310,8 +309,47 @@ function closeModal(){
   document.getElementById('playerModal').style.display = 'none';
 }
 
+// Render inicial
 renderPlayers(players);
-</script>
 
+/* =========================
+   FILTROS Y BÚSQUEDA
+   ========================= */
+const searchInput = document.getElementById('searchName');
+const filterPosition = document.getElementById('filterPosition');
+const sortPoints = document.getElementById('sortPoints');
+
+function filterAndRender() {
+  let filtered = players;
+
+  // Filtrar por nombre/apellido
+  const search = searchInput.value.toLowerCase();
+  if (search) {
+    filtered = filtered.filter(p => p.nombre.toLowerCase().includes(search) || (p.apellido && p.apellido.toLowerCase().includes(search)));
+  }
+
+  // Filtrar por posición
+  const position = filterPosition.value;
+  if (position) {
+    filtered = filtered.filter(p => p.posicion === position);
+  }
+
+  // Ordenar por puntos
+  const sort = sortPoints.value;
+  if (sort === 'asc') {
+    filtered = filtered.slice().sort((a,b) => a.puntos - b.puntos);
+  } else if (sort === 'desc') {
+    filtered = filtered.slice().sort((a,b) => b.puntos - a.puntos);
+  }
+
+  renderPlayers(filtered);
+}
+
+// Eventos de los filtros
+searchInput.addEventListener('input', filterAndRender);
+filterPosition.addEventListener('change', filterAndRender);
+sortPoints.addEventListener('change', filterAndRender);
+
+</script>
 </body>
 </html>
