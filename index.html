@@ -7,7 +7,7 @@
 <style>
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #0a0a0a; /* fondo gris muy oscuro */
+  background: #0a0a0a;
   margin: 0;
   padding: 20px;
   color: #ffffff;
@@ -15,7 +15,6 @@ body {
 
 h1 {
   text-align: center;
-  color: #ffffff;
   margin-bottom: 20px;
 }
 
@@ -42,23 +41,12 @@ input, select {
 
 .card {
   position: relative;
-  background: #ffffff; /* carta blanca */
+  background: #ffffff;
   border-radius: 12px;
-  padding: 0;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
   width: 220px;
-  height: 300px; /* dimensiones originales */
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  overflow: visible;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+  height: 300px;
+  cursor: pointer;
 }
 
 .card img {
@@ -66,15 +54,14 @@ input, select {
   height: 210px;
   object-fit: contain;
   margin: 6px auto 10px auto;
+  display: block;
   filter: drop-shadow(0 8px 10px rgba(0,0,0,0.4));
 }
-
 
 .card h3 {
   margin: -3px 5px 6px 5px;
   text-align: center;
-  color: #000000;
-  flex-shrink: 0;
+  color: #000;
 }
 
 .stats {
@@ -82,24 +69,23 @@ input, select {
   top: 8px;
   left: 8px;
   background: rgba(255,255,255,0.9);
-  padding: 4px 6px;
+  padding: 5px 7px;
   border-radius: 6px;
   font-size: 12px;
-  color: #000000;
+  color: #000;
 }
 
 .points-square {
   position: absolute;
   bottom: 10px;
   right: 10px;
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   border-radius: 4px;
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
   font-weight: bold;
 }
 
@@ -108,45 +94,39 @@ input, select {
   top: -35px;
   right: -25px;
   transform: scale(0.4);
-  transform-origin: top right;
   pointer-events: none;
 }
 
-
-/* Modal */
+/* MODAL */
 .modal {
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  inset: 0;
   background: rgba(0,0,0,0.8);
   display: none;
   justify-content: center;
   align-items: center;
-  padding: 10px;
 }
 
 .modal-content {
-  background: #ffffff;
+  background: #fff;
   border-radius: 12px;
   max-width: 400px;
   width: 100%;
   padding: 20px;
+  color: #000;
   position: relative;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-  color: #000000;
 }
 
 .close {
   position: absolute;
   top: 10px;
   right: 15px;
-  font-weight: bold;
-  font-size: 18px;
   cursor: pointer;
-  color: #000000;
+  font-weight: bold;
 }
 </style>
 </head>
+
 <body>
 
 <h1>Poblamar League</h1>
@@ -159,11 +139,6 @@ input, select {
     <option value="Defensa">Defensa</option>
     <option value="Centrocampista">Centrocampista</option>
     <option value="Delantero">Delantero</option>
-  </select>
-  <select id="sortPoints">
-    <option value="">Ordenar por puntos</option>
-    <option value="desc">Más a menos</option>
-    <option value="asc">Menos a más</option>
   </select>
 </div>
 
@@ -178,81 +153,74 @@ input, select {
 
 <script>
 const players = [
-  {nombre: "Toni", apellido: "Valls", edad: 19, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 21, jornada: 21, mvp: false, foto: "img/Toni.png"},
-  {nombre: "Unai", apellido: "Martinez", edad: 19, posicion: "Delantero", goles: 0, asistencias: 0, mvps: 0, puntos: 1, jornada: 1, mvp: false, foto: "img/Unai.png"},
-  {nombre: "Sergio", apellido: "Jiménez", edad: 19, posicion: "Delantero", goles: 0, asistencias: 0, mvps: 0, puntos: 4, jornada: 4, mvp: false, foto: "img/Sergio.png"},
-  {nombre: "Jaime", apellido: "del Rio", edad: 19, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 12, jornada: 12, mvp: false, foto: "img/Jaime.png"},
-  {nombre: "Hicham", apellido: "", edad: 19, posicion: "Defensa", goles: 0, asistencias: 0, mvps: 0, puntos: 5, jornada: 5, mvp: false, foto: "img/Hicham.png"},
-  {nombre: "Sergi", apellido: "Castaño", edad: 19, posicion: "Delantero", goles: 0, asistencias: 0, mvps: 0, puntos: 17, jornada: 17, mvp: false, foto: "img/Sergi.png"},
-  {nombre: "David", apellido: "Fernandez", edad: 19, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 1, puntos: 20, jornada: 20, mvp: true, foto: "img/David.png"},
-  {nombre: "Eloi", apellido: "Rey", edad: 19, posicion: "Defensa", goles: 0, asistencias: 0, mvps: 0, puntos: 12, jornada: 12, mvp: false, foto: "img/Eloi2.png"},
-  {nombre: "Axel", apellido: "", edad: 18, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 7, jornada: 7, mvp: false, foto: "img/sinfoto2.png"},
-  {nombre: "Arnau", apellido: "Castaño", edad: 17, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 11, jornada: 11, mvp: false, foto: "img/Arnau.png"},
-  {nombre: "Jose", apellido: "Romero", edad: 16, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 1, jornada: 1, mvp: false, foto: "img/Jose.png"},
-  {nombre: "Marc", apellido: "Gutta", edad: 19, posicion: "Defensa", goles: 0, asistencias: 0, mvps: 0, puntos: 4, jornada: 4, mvp: false, foto: "img/Marc.png"},
-  {nombre: "Ibu", apellido: "", edad: 19, posicion: "Defensa", goles: 0, asistencias: 0, mvps: 0, puntos: 4, jornada: 4, mvp: false, foto: "img/sinfoto2.png"},
-  {nombre: "Moha", apellido: "", edad: 19, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: -3, jornada: -3, mvp: false, foto: "img/Moha.png"},
-  {nombre: "Gerard", apellido: "", edad: 19, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 4, jornada: 4, mvp: false, foto: "img/sinfoto2.png"},
-  {nombre: "Jan", apellido: "Martínez", edad: 19, posicion: "Centrocampista", goles: 0, asistencias: 0, mvps: 0, puntos: 10, jornada: 10, mvp: false, foto: "img/Jan.png"},
-  {nombre: "Aitor", apellido: "Borrallo", edad: 19, posicion: "Delantero", goles: 0, asistencias: 0, mvps: 0, puntos: 18, jornada: 18, mvp: false, foto: "img/Aitor3.png"}
+  {nombre:"Toni",apellido:"Valls",edad:19,posicion:"Centrocampista",goles:4,asistencias:4,mvps:0,puntos:21,jornada:21,mvp:false,amarillas:0,rojas:0,foto:"img/Toni.png"},
+  {nombre:"Unai",apellido:"Martinez",edad:19,posicion:"Delantero",goles:0,asistencias:1,mvps:0,puntos:1,jornada:1,mvp:false,amarillas:0,rojas:0,foto:"img/Unai.png"},
+  {nombre:"Sergio",apellido:"Jiménez",edad:19,posicion:"Delantero",goles:1,asistencias:0,mvps:0,puntos:4,jornada:4,mvp:false,amarillas:1,rojas:0,foto:"img/Sergio.png"},
+  {nombre:"Jaime",apellido:"del Rio",edad:19,posicion:"Centrocampista",goles:2,asistencias:1,mvps:0,puntos:12,jornada:12,mvp:false,amarillas:1,rojas:0,foto:"img/Jaime.png"},
+  {nombre:"Hicham",apellido:"",edad:19,posicion:"Defensa",goles:1,asistencias:0,mvps:0,puntos:5,jornada:5,mvp:false,amarillas:0,rojas:0,foto:"img/Hicham.png"},
+  {nombre:"Sergi",apellido:"Castaño",edad:19,posicion:"Delantero",goles:3,asistencias:2,mvps:0,puntos:17,jornada:17,mvp:false,amarillas:0,rojas:0,foto:"img/Sergi.png"},
+  {nombre:"David",apellido:"Fernandez",edad:19,posicion:"Centrocampista",goles:2,asistencias:5,mvps:1,puntos:20,jornada:20,mvp:true,amarillas:1,rojas:0,foto:"img/David.png"},
+  {nombre:"Eloi",apellido:"Rey",edad:19,posicion:"Defensa",goles:2,asistencias:0,mvps:0,puntos:12,jornada:12,mvp:false,amarillas:1,rojas:0,foto:"img/Eloi2.png"},
+  {nombre:"Axel",apellido:"",edad:18,posicion:"Centrocampista",goles:2,asistencias:0,mvps:0,puntos:7,jornada:7,mvp:false,amarillas:2,rojas:0,foto:"img/sinfoto2.png"},
+  {nombre:"Arnau",apellido:"Castaño",edad:17,posicion:"Centrocampista",goles:2,asistencias:0,mvps:0,puntos:11,jornada:11,mvp:false,amarillas:0,rojas:0,foto:"img/Arnau.png"},
+  {nombre:"Jose",apellido:"Romero",edad:16,posicion:"Centrocampista",goles:0,asistencias:0,mvps:0,puntos:1,jornada:1,mvp:false,amarillas:0,rojas:0,foto:"img/Jose.png"},
+  {nombre:"Marc",apellido:"Gutta",edad:19,posicion:"Defensa",goles:0,asistencias:1,mvps:0,puntos:5,jornada:5,mvp:false,amarillas:1,rojas:0,foto:"img/Marc.png"},
+  {nombre:"Ibu",apellido:"",edad:19,posicion:"Defensa",goles:0,asistencias:2,mvps:0,puntos:4,jornada:4,mvp:false,amarillas:0,rojas:0,foto:"img/sinfoto2.png"},
+  {nombre:"Moha",apellido:"",edad:19,posicion:"Centrocampista",goles:0,asistencias:0,mvps:0,puntos:-3,jornada:-3,mvp:false,amarillas:3,rojas:1,foto:"img/Moha.png"},
+  {nombre:"Gerard",apellido:"",edad:19,posicion:"Centrocampista",goles:1,asistencias:0,mvps:0,puntos:4,jornada:4,mvp:false,amarillas:0,rojas:0,foto:"img/sinfoto2.png"},
+  {nombre:"Jan",apellido:"Martínez",edad:19,posicion:"Centrocampista",goles:2,asistencias:1,mvps:0,puntos:10,jornada:10,mvp:false,amarillas:0,rojas:0,foto:"img/Jan.png"},
+  {nombre:"Aitor",apellido:"Borrallo",edad:19,posicion:"Delantero",goles:3,asistencias:1,mvps:0,puntos:18,jornada:18,mvp:false,amarillas:0,rojas:0,foto:"img/Aitor3.png"}
 ];
 
-function puntosColor(jugador){
-  if (jugador.mvp) return '#ffeb3b';      // amarillo MVP
-  if (jugador.jornada < 1) return '#f44336'; // rojo
-  if (jugador.jornada <= 9) return '#4caf50'; // verde
-  return '#2196f3'; // azul (10 o más)
+function puntosColor(j){
+  if(j.mvp) return '#ffeb3b';
+  if(j.jornada < 1) return '#f44336';
+  if(j.jornada <= 9) return '#4caf50';
+  return '#2196f3';
 }
 
-const grid = document.getElementById('playersGrid');
-const filterPosition = document.getElementById('filterPosition');
-const sortPoints = document.getElementById('sortPoints');
-const searchName = document.getElementById('searchName');
+const grid = document.getElementById("playersGrid");
 
 function renderPlayers(list){
-  grid.innerHTML = '';
+  grid.innerHTML = "";
   list.forEach(p=>{
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.innerHTML=`
-      <img src='${p.foto}' />
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <img src="${p.foto}">
       <h3>${p.nombre}</h3>
-      <div class='stats'><b>${p.posicion}</b></div>
+      <div class="stats">
+        <b>${p.posicion}</b><br>
+        🟨 ${p.amarillas} &nbsp; 🟥 ${p.rojas}
+      </div>
+      <div class="points-square" style="background:${puntosColor(p)}">
+        ${p.jornada}
+      </div>
     `;
-    if(p.mvp) card.innerHTML += `<img class='mvp-flames' src='https://em-content.zobj.net/source/animated-noto-color-emoji/427/fire_1f525.gif' />`;
-    card.innerHTML += `<div class='points-square' style='background:${puntosColor(p)}'>${p.jornada}</div>`;
-    card.onclick = () => openModal(p);
+    if(p.mvp){
+      card.innerHTML += `<img class="mvp-flames" src="https://em-content.zobj.net/source/animated-noto-color-emoji/427/fire_1f525.gif">`;
+    }
+    card.onclick = ()=>openModal(p);
     grid.appendChild(card);
   });
 }
 
-function applyFilters(){
-  let filtered = [...players];
-  if(filterPosition.value) filtered=filtered.filter(p=>p.posicion.includes(filterPosition.value));
-  if(searchName.value) filtered=filtered.filter(p=>p.nombre.toLowerCase().includes(searchName.value.toLowerCase()));
-  if(sortPoints.value) filtered.sort((a,b)=>sortPoints.value==='desc'?b.puntos-a.puntos:a.puntos-b.puntos);
-  renderPlayers(filtered);
-}
-
-filterPosition.onchange = applyFilters;
-sortPoints.onchange = applyFilters;
-searchName.oninput = applyFilters;
-
 function openModal(p){
-  document.getElementById('modalBody').innerHTML=`
+  document.getElementById("modalBody").innerHTML = `
     <h2>${p.nombre} ${p.apellido}</h2>
     <p><b>Edad:</b> ${p.edad}</p>
     <p><b>Posición:</b> ${p.posicion}</p>
     <p><b>Goles:</b> ${p.goles}</p>
     <p><b>Asistencias:</b> ${p.asistencias}</p>
-    <p><b>MVPs:</b> ${p.mvps}</p>
-    <p><b>Puntos totales:</b> ${p.puntos}</p>
+    <p><b>Puntos:</b> ${p.puntos}</p>
+    <p><b>Amarillas:</b> ${p.amarillas}</p>
+    <p><b>Rojas:</b> ${p.rojas}</p>
   `;
-  document.getElementById('playerModal').style.display='flex';
+  document.getElementById("playerModal").style.display = "flex";
 }
 
 function closeModal(){
-  document.getElementById('playerModal').style.display='none';
+  document.getElementById("playerModal").style.display = "none";
 }
 
 renderPlayers(players);
