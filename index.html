@@ -161,100 +161,41 @@ input, select {
    Responsive para móviles
    ========================= */
 @media (max-width: 480px) {
-  body {
-    padding: 10px;
-  }
-
-  .filters {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
-  }
-
-  input, select {
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 10px;
-  }
-
-  .card {
-    width: 100%;
-    height: auto;
-    padding-bottom: 10px;
-  }
-
-  .card img {
-    height: 150px;
-    margin-bottom: 5px;
-  }
-
-  .points-square {
-    width: 20px;
-    height: 20px;
-    font-size: 11px;
-  }
-
-  .mvp-flames {
-    transform: scale(0.3);
-    top: -25px;
-    right: -20px;
-  }
-
-  .modal-content {
-    max-width: 90%;
-    padding: 15px;
-  }
+  body { padding: 10px; }
+  .filters { flex-direction: column; align-items: stretch; gap: 8px; }
+  input, select { width: 100%; box-sizing: border-box; }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .card { width: 100%; height: auto; padding-bottom: 10px; }
+  .card img { height: 150px; margin-bottom: 5px; }
+  .points-square { width: 20px; height: 20px; font-size: 11px; }
+  .mvp-flames { transform: scale(0.3); top: -25px; right: -20px; }
+  .modal-content { max-width: 90%; padding: 15px; }
 }
 
 /* =========================
    Overlay de contraseña y blur
    ========================= */
 #passwordOverlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 2000;
-  color: #fff;
-  backdrop-filter: blur(10px);
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7); display: flex;
+  justify-content: center; align-items: center; z-index: 2000;
+  color: #fff; backdrop-filter: blur(10px);
 }
 
 .password-box {
-  background: rgba(0,0,0,0.85);
-  padding: 30px 20px;
-  border-radius: 12px;
-  text-align: center;
+  background: rgba(0,0,0,0.85); padding: 30px 20px; border-radius: 12px; text-align: center;
 }
 
 .password-box input {
-  padding: 8px 12px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  width: 200px;
-  margin-bottom: 10px;
+  padding: 8px 12px; border-radius: 6px; border: 1px solid #ccc; width: 200px; margin-bottom: 10px;
 }
 
 .password-box button {
-  padding: 8px 15px;
-  border-radius: 6px;
-  border: none;
-  background: #4caf50;
-  color: #fff;
-  cursor: pointer;
+  padding: 8px 15px; border-radius: 6px; border: none; background: #4caf50; color: #fff; cursor: pointer;
 }
 
-/* Blur inicial del contenido */
 #mainContent.locked {
-  filter: blur(8px);
-  pointer-events: none; /* Evita interacción mientras está bloqueado */
-  user-select: none;    /* Evita seleccionar texto */
+  filter: blur(8px); pointer-events: none; user-select: none;
 }
 </style>
 </head>
@@ -272,7 +213,6 @@ input, select {
 
 <!-- Contenido principal -->
 <div id="mainContent" class="locked">
-
 <h1>Poblamar League</h1>
 
 <div class="filters">
@@ -283,6 +223,12 @@ input, select {
     <option value="Defensa">Defensa</option>
     <option value="Centrocampista">Centrocampista</option>
     <option value="Delantero">Delantero</option>
+  </select>
+  <select id="filterJornada">
+    <option value="">Todas las jornadas</option>
+    <option value="1">Jornada 1</option>
+    <option value="2">Jornada 2</option>
+    <option value="3">Jornada 3</option>
   </select>
   <select id="sortPoints">
     <option value="">Ordenar por puntos</option>
@@ -299,139 +245,145 @@ input, select {
     <div id="modalBody"></div>
   </div>
 </div>
-
 </div> <!-- fin mainContent -->
 
 <script>
+// =========================
+// Datos de jugadores
+// =========================
 const players = [
-  {nombre:"Toni",apellido:"Valls",edad:19,posicion:"Centrocampista",goles:4,asistencias:4,mvps:0,puntos:21,jornada:21,mvp:false,amarillas:0,rojas:0,foto:"img/Toni.png"},
-  {nombre:"Unai",apellido:"Martinez",edad:19,posicion:"Delantero",goles:0,asistencias:1,mvps:0,puntos:1,jornada:1,mvp:false,amarillas:0,rojas:0,foto:"img/Unai.png"},
-  {nombre:"Sergio",apellido:"Jiménez",edad:19,posicion:"Delantero",goles:1,asistencias:0,mvps:0,puntos:4,jornada:4,mvp:false,amarillas:1,rojas:0,foto:"img/Sergio.png"},
-  {nombre:"Jaime",apellido:"del Rio",edad:19,posicion:"Centrocampista",goles:2,asistencias:1,mvps:0,puntos:12,jornada:12,mvp:false,amarillas:1,rojas:0,foto:"img/Jaime.png"},
-  {nombre:"Hicham",apellido:"",edad:19,posicion:"Defensa",goles:1,asistencias:0,mvps:0,puntos:5,jornada:5,mvp:false,amarillas:0,rojas:0,foto:"img/Hicham.png"},
-  {nombre:"Sergi",apellido:"Castaño",edad:19,posicion:"Delantero",goles:3,asistencias:2,mvps:0,puntos:17,jornada:17,mvp:false,amarillas:0,rojas:0,foto:"img/Sergi.png"},
-  {nombre:"David",apellido:"Fernandez",edad:19,posicion:"Centrocampista",goles:2,asistencias:5,mvps:1,puntos:20,jornada:20,mvp:true,amarillas:1,rojas:0,foto:"img/David.png"},
-  {nombre:"Eloi",apellido:"Rey",edad:19,posicion:"Defensa",goles:2,asistencias:0,mvps:0,puntos:12,jornada:12,mvp:false,amarillas:1,rojas:0,foto:"img/Eloi2.png"},
-  {nombre:"Axel",apellido:"",edad:18,posicion:"Centrocampista",goles:2,asistencias:0,mvps:0,puntos:7,jornada:7,mvp:false,amarillas:2,rojas:0,foto:"img/sinfoto2.png"},
-  {nombre:"Arnau",apellido:"Castaño",edad:17,posicion:"Centrocampista",goles:2,asistencias:0,mvps:0,puntos:11,jornada:11,mvp:false,amarillas:0,rojas:0,foto:"img/Arnau.png"},
-  {nombre:"Jose",apellido:"Romero",edad:16,posicion:"Centrocampista",goles:0,asistencias:0,mvps:0,puntos:1,jornada:1,mvp:false,amarillas:0,rojas:0,foto:"img/Jose.png"},
-  {nombre:"Marc",apellido:"Gutta",edad:19,posicion:"Defensa",goles:0,asistencias:1,mvps:0,puntos:4,jornada:4,mvp:false,amarillas:1,rojas:0,foto:"img/Marc.png"},
-  {nombre:"Ibu",apellido:"",edad:19,posicion:"Defensa",goles:0,asistencias:2,mvps:0,puntos:4,jornada:4,mvp:false,amarillas:0,rojas:0,foto:"img/sinfoto2.png"},
-  {nombre:"Moha",apellido:"",edad:19,posicion:"Centrocampista",goles:0,asistencias:0,mvps:0,puntos:-3,jornada:-3,mvp:false,amarillas:3,rojas:1,foto:"img/Moha.png"},
-  {nombre:"Gerard",apellido:"",edad:19,posicion:"Centrocampista",goles:1,asistencias:0,mvps:0,puntos:4,jornada:4,mvp:false,amarillas:0,rojas:0,foto:"img/sinfoto2.png"},
-  {nombre:"Jan",apellido:"Martínez",edad:19,posicion:"Centrocampista",goles:2,asistencias:1,mvps:0,puntos:10,jornada:10,mvp:false,amarillas:0,rojas:0,foto:"img/Jan.png"},
-  {nombre:"Aitor",apellido:"Borrallo",edad:19,posicion:"Delantero",goles:3,asistencias:1,mvps:0,puntos:18,jornada:18,mvp:false,amarillas:0,rojas:0,foto:"img/Aitor3.png"}
+  {nombre:"Toni",apellido:"Valls",edad:19,posicion:"Centrocampista",
+   puntosPorJornada:{1:21,2:0,3:0}, jornadas:[1,2,3], mvps:false, amarillas:0, rojas:0, foto:"img/Toni.png"},
+  {nombre:"Unai",apellido:"Martinez",edad:19,posicion:"Delantero",
+   puntosPorJornada:{1:1,2:0,3:0}, jornadas:[1,2,3], mvps:false, amarillas:0, rojas:0, foto:"img/Unai.png"},
+  {nombre:"Sergio",apellido:"Jiménez",edad:19,posicion:"Delantero",
+   puntosPorJornada:{1:4,2:0,3:0}, jornadas:[1,2,3], mvps:false, amarillas:1, rojas:0, foto:"img/Sergio.png"},
+  {nombre:"Jaime",apellido:"del Rio",edad:19,posicion:"Centrocampista",
+   puntosPorJornada:{1:12,2:0,3:0}, jornadas:[1,2,3], mvps:false, amarillas:1, rojas:0, foto:"img/Jaime.png"},
+  {nombre:"Hicham",apellido:"",edad:19,posicion:"Defensa",
+   puntosPorJornada:{1:5,2:0,3:0}, jornadas:[1,2,3], mvps:false, amarillas:0, rojas:0, foto:"img/Hicham.png"},
+  {nombre:"Sergi",apellido:"Castaño",edad:19,posicion:"Delantero",
+   puntosPorJornada:{1:17,2:0,3:0}, jornadas:[1,2,3], mvps:false, amarillas:0, rojas:0, foto:"img/Sergi.png"},
+  {nombre:"David",apellido:"Fernandez",edad:19,posicion:"Centrocampista",
+   puntosPorJornada:{1:20,2:0,3:0}, jornadas:[1,2,3], mvps:true, amarillas:1, rojas:0, foto:"img/David.png"},
+  {nombre:"Eloi",apellido:"Rey",edad:19,posicion:"Defensa",
+   puntosPorJornada:{1:12,2:0,3:0}, jornadas:[1,2,3], mvps:false, amarillas:1, rojas:0, foto:"img/Eloi2.png"},
+  {nombre:"Axel",apellido:"",edad:18,posicion:"Centrocampista",
+   puntosPorJornada:{1:7,2:0,3:0}, jornadas:[1,2,3], mvps:false, amarillas:2, rojas:0, foto:"img/sinfoto2.png"},
+  {nombre:"Arnau",apellido:"Castaño",edad:17,posicion:"Centrocampista",
+   puntosPorJornada:{1:11,2:0,3:0}, jornadas:[1,2,3], mvps:false, amarillas:0, rojas:0, foto:"img/Arnau.png"},
+  {nombre:"Jose",apellido:"Romero",edad:16,posicion:"Centrocampista",
+   puntosPorJornada:{1:1,2:0,3:0}, jornadas:[1,2,3], mvps:false, amarillas:0, rojas:0, foto:"img/Jose.png"},
+  {nombre:"Marc",apellido:"Gutta",edad:19,posicion:"Defensa",
+   puntosPorJornada:{1:4,2:0,3:0}, jornadas:[1,2,3], mvps:false, amarillas:1, rojas:0, foto:"img/Marc.png"},
+  {nombre:"Ibu",apellido:"",edad:19,posicion:"Defensa",
+   puntosPorJornada:{1:4,2:0,3:0}, jornadas:[1,2,3], mvps:false, amarillas:0, rojas:0, foto:"img/sinfoto2.png"},
+  {nombre:"Moha",apellido:"",edad:19,posicion:"Centrocampista",
+   puntosPorJornada:{1:-3,2:0,3:0}, jornadas:[1,2,3], mvps:false, amarillas:3, rojas:1, foto:"img/Moha.png"},
+  {nombre:"Gerard",apellido:"",edad:19,posicion:"Centrocampista",
+   puntosPorJornada:{1:4,2:0,3:0}, jornadas:[1,2,3], mvps:false, amarillas:0, rojas:0, foto:"img/sinfoto2.png"},
+  {nombre:"Jan",apellido:"Martínez",edad:19,posicion:"Centrocampista",
+   puntosPorJornada:{1:10,2:0,3:0}, jornadas:[1,2,3], mvps:false, amarillas:0, rojas:0, foto:"img/Jan.png"},
+  {nombre:"Aitor",apellido:"Borrallo",edad:19,posicion:"Delantero",
+   puntosPorJornada:{1:18,2:0,3:0}, jornadas:[1,2,3], mvps:false, amarillas:0, rojas:0, foto:"img/Aitor3.png"}
 ];
 
-function puntosColor(jugador){
-  if (jugador.mvp) return '#ffeb3b';              // Amarillo para MVP
-  if (jugador.jornada < 1) return '#f44336';      // Rojo si no ha jugado
-  if (jugador.puntos >= 1 && jugador.puntos <= 5) return '#ff9800'; // Naranja si tiene entre 1 y 5 puntos
-  if (jugador.jornada <= 9) return '#4caf50';     // Verde si ha jugado menos de 10 jornadas
-  return '#2196f3';                               // Azul por defecto
+// =========================
+// Función color puntos
+// =========================
+function puntosColor(jugador, puntos){
+  if (jugador.mvp) return '#ffeb3b';
+  if (puntos < 1) return '#f44336';
+  if (puntos >=1 && puntos <=5) return '#ff9800';
+  if (puntos <=9) return '#4caf50';
+  return '#2196f3';
 }
 
+// =========================
+// Render jugadores
+// =========================
 const grid = document.getElementById('playersGrid');
-
-function renderPlayers(list){
+function renderPlayers(list, jornadaSeleccionada){
   grid.innerHTML = '';
   list.forEach(p=>{
+    let puntos = jornadaSeleccionada ? (p.puntosPorJornada[jornadaSeleccionada] || 0) : 0;
     const card = document.createElement('div');
     card.className = 'card';
     card.innerHTML = `
       <img src="${p.foto}">
       <h3>${p.nombre}</h3>
       <div class="stats"><b>${p.posicion}</b></div>
-      <div class="points-square" style="background:${puntosColor(p)}">${p.puntos}</div>
+      <div class="points-square" style="background:${puntosColor(p,puntos)}">${puntos}</div>
     `;
     if(p.mvp){
       card.innerHTML += `<img class="mvp-flames" src="https://em-content.zobj.net/source/animated-noto-color-emoji/427/fire_1f525.gif">`;
     }
-    card.onclick = () => openModal(p);
+    card.onclick = ()=>openModal(p);
     grid.appendChild(card);
   });
 }
 
+// =========================
+// Modal
+// =========================
 function openModal(p){
+  let puntosTotales = Object.values(p.puntosPorJornada).reduce((a,b)=>a+b,0);
   document.getElementById('modalBody').innerHTML = `
     <h2>${p.nombre} ${p.apellido}</h2>
     <p><b>Edad:</b> ${p.edad}</p>
     <p><b>Posición:</b> ${p.posicion}</p>
-    <p><b>Goles:</b> ${p.goles}</p>
-    <p><b>Asistencias:</b> ${p.asistencias}</p>
-    <p><b>MVPs:</b> ${p.mvps}</p>
-    <p><b>Puntos totales:</b> ${p.puntos}</p>
+    <p><b>Puntos totales:</b> ${puntosTotales}</p>
     <p><b>Amarillas:</b> ${p.amarillas}</p>
     <p><b>Rojas:</b> ${p.rojas}</p>
+    <p><b>Puntos por jornada:</b> ${JSON.stringify(p.puntosPorJornada)}</p>
   `;
-  document.getElementById('playerModal').style.display = 'flex';
+  document.getElementById('playerModal').style.display='flex';
 }
 
-function closeModal(){
-  document.getElementById('playerModal').style.display = 'none';
-}
+function closeModal(){ document.getElementById('playerModal').style.display='none'; }
 
-// Render inicial
-renderPlayers(players);
-
-/* =========================
-   FILTROS Y BÚSQUEDA
-   ========================= */
+// =========================
+// Filtros y búsqueda
+// =========================
 const searchInput = document.getElementById('searchName');
 const filterPosition = document.getElementById('filterPosition');
+const filterJornada = document.getElementById('filterJornada');
 const sortPoints = document.getElementById('sortPoints');
 
-function filterAndRender() {
+function filterAndRender(){
   let filtered = players;
-
-  // Filtrar por nombre/apellido
   const search = searchInput.value.toLowerCase();
-  if (search) {
+  if(search){
     filtered = filtered.filter(p => p.nombre.toLowerCase().includes(search) || (p.apellido && p.apellido.toLowerCase().includes(search)));
   }
-
-  // Filtrar por posición
   const position = filterPosition.value;
-  if (position) {
-    filtered = filtered.filter(p => p.posicion === position);
-  }
-
-  // Ordenar por puntos
+  if(position){ filtered = filtered.filter(p=>p.posicion===position); }
+  const jornada = filterJornada.value;
+  if(jornada){ filtered = filtered.filter(p => p.jornadas.includes(Number(jornada))); }
   const sort = sortPoints.value;
-  if (sort === 'asc') {
-    filtered = filtered.slice().sort((a,b) => a.puntos - b.puntos);
-  } else if (sort === 'desc') {
-    filtered = filtered.slice().sort((a,b) => b.puntos - a.puntos);
-  }
-
-  renderPlayers(filtered);
+  if(sort==='asc'){ filtered = filtered.slice().sort((a,b)=> (filterJornada.value ? (a.puntosPorJornada[jornada]||0)-(b.puntosPorJornada[jornada]||0) : 0)); }
+  if(sort==='desc'){ filtered = filtered.slice().sort((a,b)=> (filterJornada.value ? (b.puntosPorJornada[jornada]||0)-(a.puntosPorJornada[jornada]||0) : 0)); }
+  renderPlayers(filtered, jornada);
 }
 
-// Eventos de los filtros
-searchInput.addEventListener('input', filterAndRender);
-filterPosition.addEventListener('change', filterAndRender);
-sortPoints.addEventListener('change', filterAndRender);
+searchInput.addEventListener('input',filterAndRender);
+filterPosition.addEventListener('change',filterAndRender);
+filterJornada.addEventListener('change',filterAndRender);
+sortPoints.addEventListener('change',filterAndRender);
 
-/* =========================
-   Contraseña y desbloqueo
-   ========================= */
-const correctPassword = "1234"; // Cambia a tu contraseña
+// =========================
+// Contraseña y desbloqueo
+// =========================
+const correctPassword = "1234";
 const mainContent = document.getElementById('mainContent');
-
-function checkPassword() {
+function checkPassword(){
   const input = document.getElementById('passwordInput').value;
-  if(input === correctPassword){
-    document.getElementById('passwordOverlay').style.display = 'none';
-    mainContent.classList.remove('locked'); // Quita el blur
+  if(input===correctPassword){
+    document.getElementById('passwordOverlay').style.display='none';
+    mainContent.classList.remove('locked');
   } else {
-    document.getElementById('passwordError').style.display = 'block';
+    document.getElementById('passwordError').style.display='block';
   }
 }
-
-// Presionar Enter también valida
-document.getElementById('passwordInput').addEventListener('keypress', function(e){
-  if(e.key === 'Enter') checkPassword();
-});
-</script>
-</body>
-</html>
+document.getElementById('passwordInput').addEventListener('keypress',function(e){
+  if(e.key==='Enter
