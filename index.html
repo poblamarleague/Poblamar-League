@@ -26,6 +26,44 @@ input,select{padding:8px 12px;font-size:14px;border-radius:6px;border:1px solid 
 .password-box input{padding:8px 12px;border-radius:6px;border:1px solid #ccc;width:200px;margin-bottom:10px;}
 .password-box button{padding:8px 15px;border-radius:6px;border:none;background:#4caf50;color:#fff;cursor:pointer;}
 #mainContent.locked{filter:blur(8px);pointer-events:none;user-select:none;}
+
+ .news-board {
+  max-width: 900px;
+  margin: 0 auto 30px auto;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 15px 20px;
+  color: #000;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.35);
+}
+
+.news-board h2 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.news-item {
+  display: none;
+  align-items: center;
+  gap: 15px;
+}
+
+.news-item.active {
+  display: flex;
+}
+
+.news-item img {
+  width: 120px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.news-item p {
+  margin: 0;
+  font-size: 14px;
+}
+ 
 </style>
 </head>
 <body>
@@ -42,6 +80,23 @@ input,select{padding:8px 12px;font-size:14px;border-radius:6px;border:1px solid 
 <div id="mainContent" class="locked">
 
 <h1>Poblamar League</h1>
+
+  <div class="news-board">
+  <h2>📰 Noticias</h2>
+  <div class="news-item active">
+    <img src="img/noticia1.jpg" alt="Noticia 1">
+    <p><b>David Fernández MVP</b><br>Gran actuación en la Jornada 1 con 20 puntos.</p>
+  </div>
+  <div class="news-item">
+    <img src="img/noticia2.jpg" alt="Noticia 2">
+    <p><b>Partido intenso</b><br>La Poblamar League arranca con muchos goles.</p>
+  </div>
+  <div class="news-item">
+    <img src="img/noticia3.jpg" alt="Noticia 3">
+    <p><b>Sergi Castaño en forma</b><br>3 goles y 2 asistencias en su debut.</p>
+  </div>
+</div>
+
 
 <div class="filters">
   <input type="text" id="searchName" placeholder="Buscar jugador...">
@@ -230,6 +285,21 @@ const modal = document.getElementById('playerModal');
 modal.addEventListener('click', function(e){
   if(e.target === modal) closeModal();
 });
+
+
+/* =========================
+   Noticias automáticas
+   ========================= */
+let currentNews = 0;
+const newsItems = document.querySelectorAll('.news-item');
+
+setInterval(() => {
+  newsItems[currentNews].classList.remove('active');
+  currentNews = (currentNews + 1) % newsItems.length;
+  newsItems[currentNews].classList.add('active');
+}, 5000);
+
+
 </script>
 </body>
 </html>
