@@ -366,11 +366,11 @@ setInterval(() => {
   goleadores.forEach((p, index) => {
     const row = document.createElement('tr');
     row.innerHTML = `
-      <td>${index + 1}</td>
-      <td>${p.nombre} ${p.apellido}</td>
-      <td><b>${p.goles}</b></td>
-      <td>Poblamar</td>
-    `;
+  <td>${index + 1}</td>
+  <td>${p.nombre} ${p.apellido}</td>
+  <td><b>${p.goles}</b></td>
+`;
+
     tbody.appendChild(row);
   });
 }
