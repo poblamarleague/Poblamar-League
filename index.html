@@ -123,7 +123,18 @@ input,select{padding:8px 12px;font-size:14px;border-radius:6px;border:1px solid 
       border-radius:12px;
       text-align:center;
       max-width:350px;
+      position:relative;
   ">
+    <!-- Botón para cerrar el popup -->
+    <span id="closeJ2Popup" style="
+        position:absolute;
+        top:10px;
+        right:15px;
+        font-size:20px;
+        cursor:pointer;
+        color:#fff;
+    ">✖</span>
+
     <p style="font-size:18px; margin-bottom:20px;">Los puntos de la J2 ya están disponibles.</p>
     <button id="verJ2Btn" style="
         padding:10px 20px;
@@ -614,18 +625,25 @@ setInterval(() => {
 renderPichichi();
 
 
- window.addEventListener('load', () => {
+window.addEventListener('load', () => {
   const popup = document.getElementById('jornadaPopup');
   const verBtn = document.getElementById('verJ2Btn');
+  const closeBtn = document.getElementById('closeJ2Popup');
 
+  // Botón "Ver" filtra por J2 y cierra popup
   verBtn.addEventListener('click', () => {
-    // Filtrar por J2
-    document.getElementById('filterJornada').value = "2"; // poner J2 en el select
+    document.getElementById('filterJornada').value = "2";
     jornadaSeleccionada = 2;
-    filterAndRender(); // actualizar la grid
-    popup.style.display = 'none'; // ocultar popup
+    filterAndRender();
+    popup.style.display = 'none';
+  });
+
+  // Cruz para cerrar sin filtrar
+  closeBtn.addEventListener('click', () => {
+    popup.style.display = 'none';
   });
 });
+
 
 
 </script>
