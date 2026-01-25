@@ -403,14 +403,15 @@ let esMVP = false;
 
 if (jornadaSeleccionada) {
   const j = p.jornadas[jornadaSeleccionada];
-  if(j) {
-    // Mostrar 0 si jugó y sacó 0, "-" si no jugó
-    puntos = j.puntos !== undefined ? j.puntos : '-';
-    esMVP = j.mvp;
-  }
+  if (!j || j.puntos === undefined) return; // no mostrar jugadores que no jugaron
+  puntos = j.puntos; // si hizo 0 puntos, mostrar 0
+  esMVP = j.mvp;
 } else {
-  puntos = totales.puntos;
+  // mostrar totales sumando solo jornadas con puntos definidos
+  puntos = Object.values(p.jornadas)
+                 .reduce((sum, j) => sum + (j.puntos || 0), 0);
 }
+
 
 
 
