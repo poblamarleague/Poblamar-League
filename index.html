@@ -403,13 +403,15 @@ let esMVP = false;
 
 if (jornadaSeleccionada) {
   const j = p.jornadas[jornadaSeleccionada];
-  if (j) {
-    puntos = j.puntos; // deja el 0 tal cual
+  if(j) {
+    // Mostrar 0 si jugó y sacó 0, "-" si no jugó
+    puntos = j.puntos !== undefined ? j.puntos : '-';
     esMVP = j.mvp;
   }
 } else {
   puntos = totales.puntos;
 }
+
 
 
     const color = puntos==='-'?'#9e9e9e':puntosColor(p);
@@ -474,51 +476,56 @@ const filterPosition = document.getElementById('filterPosition');
 const filterJornada = document.getElementById('filterJornada');
 const sortPoints = document.getElementById('sortPoints');
 
-function filterAndRender(){
+function filterAndRender() {
   let filtered = players;
-  const search=searchInput.value.toLowerCase();
-  if(search) filtered=filtered.filter(p=>p.nombre.toLowerCase().includes(search) || (p.apellido && p.apellido.toLowerCase().includes(search)));
-  const position=filterPosition.value;
-  if(position) filtered=filtered.filter(p=>p.posicion===position);
+
+  const search = searchInput.value.toLowerCase();
+  if(search) {
+    filtered = filtered.filter(p =>
+      p.nombre.toLowerCase().includes(search) || 
+      (p.apellido && p.apellido.toLowerCase().includes(search))
+    );
+  }
+
+  const position = filterPosition.value;
+  if(position) filtered = filtered.filter(p => p.posicion === position);
+
   const jornadaVal = filterJornada.value;
-  jornadaSeleccionada = jornadaVal?Number(jornadaVal):null;
- if (jornadaSeleccionada) {
-  filtered = filtered.filter(p => p.jornadas[jornadaSeleccionada]); // solo filtra los que NO jugaron
+  jornadaSeleccionada = jornadaVal ? Number(jornadaVal) : null;
 
-
-}
+  if(jornadaSeleccionada) {
+    // Solo jugadores que tengan puntos definidos (jugaron)
+    filtered = filtered.filter(p => p.jornadas[jornadaSeleccionada] && p.jornadas[jornadaSeleccionada].puntos !== undefined);
+  }
 
   const sort = sortPoints.value;
-  if (sort === 'asc') {
-  filtered = filtered.slice().sort((a, b) => {
-    const pa = jornadaSeleccionada
-      ? a.jornadas[jornadaSeleccionada]?.puntos || 0
-      : calcularTotales(a).puntos;
+  if(sort === 'asc') {
+    filtered = filtered.slice().sort((a,b) => {
+      const pa = jornadaSeleccionada 
+        ? (a.jornadas[jornadaSeleccionada]?.puntos ?? -Infinity)
+        : calcularTotales(a).puntos;
+      const pb = jornadaSeleccionada
+        ? (b.jornadas[jornadaSeleccionada]?.puntos ?? -Infinity)
+        : calcularTotales(b).puntos;
+      return pa - pb;
+    });
+  }
 
-    const pb = jornadaSeleccionada
-      ? b.jornadas[jornadaSeleccionada]?.puntos || 0
-      : calcularTotales(b).puntos;
-
-    return pa - pb;
-  });
-}
-
-  if (sort === 'desc') {
-  filtered = filtered.slice().sort((a, b) => {
-    const pa = jornadaSeleccionada
-      ? a.jornadas[jornadaSeleccionada]?.puntos || 0
-      : calcularTotales(a).puntos;
-
-    const pb = jornadaSeleccionada
-      ? b.jornadas[jornadaSeleccionada]?.puntos || 0
-      : calcularTotales(b).puntos;
-
-    return pb - pa;
-  });
-}
+  if(sort === 'desc') {
+    filtered = filtered.slice().sort((a,b) => {
+      const pa = jornadaSeleccionada 
+        ? (a.jornadas[jornadaSeleccionada]?.puntos ?? -Infinity)
+        : calcularTotales(a).puntos;
+      const pb = jornadaSeleccionada
+        ? (b.jornadas[jornadaSeleccionada]?.puntos ?? -Infinity)
+        : calcularTotales(b).puntos;
+      return pb - pa;
+    });
+  }
 
   renderPlayers(filtered);
 }
+
 
 searchInput.addEventListener('input',filterAndRender);
 filterPosition.addEventListener('change',filterAndRender);
