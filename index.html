@@ -207,6 +207,15 @@ input,select{padding:8px 12px;font-size:14px;border-radius:6px;border:1px solid 
   50% { opacity:1; }
 }
 
+ @keyframes logoPulse {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px #ffeb3b); }
+  50% { transform: scale(1.1); filter: drop-shadow(0 0 20px #ffeb3b); }
+}
+
+#splashLogo {
+  animation: logoPulse 2s infinite ease-in-out;
+}
+
 
 </style>
 </head>
