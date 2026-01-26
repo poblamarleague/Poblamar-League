@@ -168,10 +168,58 @@ input,select{padding:8px 12px;font-size:14px;border-radius:6px;border:1px solid 
   100% { box-shadow: 0 0 10px gold; }
 }
 
+ /* Pantalla de carga */
+#splashScreen {
+  position: fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:#000;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  z-index:4000;
+  color:#fff;
+  opacity:1;
+  transition: opacity 1s ease;
+}
+
+.splash-content {
+  text-align:center;
+}
+
+#splashLogo {
+  max-width: 300px;
+  margin-bottom: 20px;
+}
+
+#splashPhrase {
+  font-size: 18px;
+  font-style: italic;
+  color: #ffeb3b;
+  animation: fadeInOut 3s ease-in-out infinite;
+}
+
+@keyframes fadeInOut {
+  0%,100% { opacity:0; }
+  50% { opacity:1; }
+}
+
 
 </style>
 </head>
 <body>
+
+ <!-- Pantalla de carga -->
+<div id="splashScreen">
+  <div class="splash-content">
+    <img src="img/banner_logo.png" alt="Poblamar League Logo" id="splashLogo">
+    <p id="splashPhrase"></p>
+  </div>
+</div>
+
 
 <div id="mainContent">
 
@@ -792,6 +840,32 @@ window.addEventListener('load', () => {
   });
 });
 
+// Frases de carga
+const splashPhrases = [
+  "Jaime está llorando, da igual cuando leas esto.",
+  "Marc guarda sus goles para Navidad.",
+  "Sergio entrena escondido… incluso de sí mismo.",
+  "Joan Cama practica penales en la sección de congelados del LIDL.",
+  "Jeremy tiene los mismos minutos que Cama.",
+  "Axel aún no sabe si es delantero o turista en el campo.",
+  "Hicham defiende con pasión… a veces demasiada.",
+  "Jaime llora, ríe y luego llora otra vez, todo en la misma jugada.",
+  "Moha colecciona tarjetas como si fueran cromos."
+];
+
+const splashPhrase = document.getElementById('splashPhrase');
+const splash = document.getElementById('splashScreen');
+
+// Elegir frase aleatoria
+splashPhrase.textContent = splashPhrases[Math.floor(Math.random() * splashPhrases.length)];
+
+// Duración 3 segundos + fade
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    splash.style.opacity = '0';
+    setTimeout(() => { splash.style.display = 'none'; }, 1000); // quitar del DOM
+  }, 3000);
+});
 
 
 
