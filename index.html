@@ -324,14 +324,17 @@ input,select{padding:8px 12px;font-size:14px;border-radius:6px;border:1px solid 
   <p id="countdown" style="font-size:22px; font-weight:bold; margin:10px 0;"></p>
   <button id="addToCalendar" style="
     padding:10px 20px;
-    border-radius:6px;
+    border-radius:8px;
     border:none;
-    background:#ff0055;
-    color:#fff;
+    background: linear-gradient(135deg, gold, #ffeb3b, #ffc107, gold);
+    color:#000;
+    font-weight:bold;
     cursor:pointer;
     font-size:16px;
-    transition:0.3s;
-  ">Recuérdamelo</button>
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+">Recuérdamelo</button>
+
 </div>
 
 
@@ -954,33 +957,24 @@ updateCountdown();
 // ======== Botón Recuérdamelo =========
 document.getElementById('addToCalendar').addEventListener('click', () => {
   const start = getNextFriday17();
-  const end = new Date(start.getTime() + 90*60000); // duración 1h30
+  const end = new Date(start.getTime() + 90*60000); // 1h30 duración
   const pad = n => n.toString().padStart(2,'0');
 
-  // Formato ICS para iPhone / Outlook
-  function formatDate(d){
+  // Formato YYYYMMDDTHHMMSSZ para Google Calendar
+  const formatGC = d => {
     return `${d.getUTCFullYear()}${pad(d.getUTCMonth()+1)}${pad(d.getUTCDate())}T${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}00Z`;
-  }
+  };
 
-  const icsContent = `
-BEGIN:VCALENDAR
-VERSION:2.0
-BEGIN:VEVENT
-SUMMARY:Jornada Poblamar League
-DTSTART:${formatDate(start)}
-DTEND:${formatDate(end)}
-DESCRIPTION:No te pierdas la próxima jornada de la Poblamar League
-END:VEVENT
-END:VCALENDAR
-  `.trim();
+  const title = encodeURIComponent("Jornada Poblamar League");
+  const details = encodeURIComponent("No te pierdas la próxima jornada de la Poblamar League");
+  const startStr = formatGC(start);
+  const endStr = formatGC(end);
 
-  const blob = new Blob([icsContent], { type: 'text/calendar' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = "PoblamarLeague_Jornada.ics";
-  a.click();
+  const gcUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&dates=${startStr}/${endStr}`;
+
+  window.open(gcUrl, '_blank');
 });
+
 
 
 </script>
