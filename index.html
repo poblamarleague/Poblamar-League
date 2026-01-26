@@ -218,6 +218,22 @@ input,select{padding:8px 12px;font-size:14px;border-radius:6px;border:1px solid 
   }
 }
 
+@media(max-width:480px){
+  #nextJornada {
+    padding:15px;
+  }
+  #nextJornada h2 {
+    font-size:18px;
+  }
+  #nextJornada #countdown {
+    font-size:16px;
+  }
+  #nextJornada button {
+    font-size:14px;
+    padding:8px 15px;
+  }
+}
+
  
 </style>
 </head>
@@ -294,6 +310,29 @@ input,select{padding:8px 12px;font-size:14px;border-radius:6px;border:1px solid 
   </a>
 </div>
 
+<div id="nextJornada" style="
+    max-width:900px;
+    margin: 0 auto 30px auto;
+    background:#111;
+    border-radius:14px;
+    padding:20px;
+    color:#fff;
+    text-align:center;
+    box-shadow:0 6px 15px rgba(0,0,0,0.35);
+">
+  <h2>Siguiente Jornada</h2>
+  <p id="countdown" style="font-size:22px; font-weight:bold; margin:10px 0;"></p>
+  <button id="addToCalendar" style="
+    padding:10px 20px;
+    border-radius:6px;
+    border:none;
+    background:#ff0055;
+    color:#fff;
+    cursor:pointer;
+    font-size:16px;
+    transition:0.3s;
+  ">Recuérdamelo</button>
+</div>
 
 
   <div class="news-board">
@@ -878,6 +917,70 @@ window.addEventListener('load', () => {
   }, 6000);
 });
 
+// ======== Temporizador =========
+function getNextFriday17() {
+  const now = new Date();
+  const day = now.getDay(); // 0=domingo, 5=viernes
+  let diff = (5 - day + 7) % 7;
+  if(diff === 0 && now.getHours() >= 17) diff = 7; // si hoy ya pasó las 17
+  const nextFriday = new Date(now);
+  nextFriday.setDate(now.getDate() + diff);
+  nextFriday.setHours(17,0,0,0);
+  return nextFriday;
+}
+
+function updateCountdown() {
+  const target = getNextFriday17();
+  const now = new Date();
+  const diff = target - now;
+
+  if(diff <= 0){
+    document.getElementById('countdown').textContent = "¡La jornada ha comenzado!";
+    return;
+  }
+
+  const days = Math.floor(diff / (1000*60*60*24));
+  const hours = Math.floor((diff / (1000*60*60)) % 24);
+  const minutes = Math.floor((diff / (1000*60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+
+  document.getElementById('countdown').textContent =
+    `${days}d ${hours}h ${minutes}m ${seconds}s`;
+}
+
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+// ======== Botón Recuérdamelo =========
+document.getElementById('addToCalendar').addEventListener('click', () => {
+  const start = getNextFriday17();
+  const end = new Date(start.getTime() + 90*60000); // duración 1h30
+  const pad = n => n.toString().padStart(2,'0');
+
+  // Formato ICS para iPhone / Outlook
+  function formatDate(d){
+    return `${d.getUTCFullYear()}${pad(d.getUTCMonth()+1)}${pad(d.getUTCDate())}T${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}00Z`;
+  }
+
+  const icsContent = `
+BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+SUMMARY:Jornada Poblamar League
+DTSTART:${formatDate(start)}
+DTEND:${formatDate(end)}
+DESCRIPTION:No te pierdas la próxima jornada de la Poblamar League
+END:VEVENT
+END:VCALENDAR
+  `.trim();
+
+  const blob = new Blob([icsContent], { type: 'text/calendar' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = "PoblamarLeague_Jornada.ics";
+  a.click();
+});
 
 
 </script>
