@@ -203,9 +203,11 @@ input,select{padding:8px 12px;font-size:14px;border-radius:6px;border:1px solid 
 }
 
 @keyframes fadeInOut {
-  0%,100% { opacity:0; }
-  50% { opacity:1; }
+  0%, 10% { opacity: 0; }    /* empieza invisible */
+  10%, 90% { opacity: 1; }   /* visible casi todo el tiempo */
+  90%, 100% { opacity: 0; }  /* se desvanece al final */
 }
+
 
 @media (max-width: 480px) {
   #splashPhrase {
