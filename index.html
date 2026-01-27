@@ -371,7 +371,114 @@ input,select{padding:8px 12px;font-size:14px;border-radius:6px;border:1px solid 
     font-size: 14px;
   }
 }
+  
+/* Overlay popup centrado */
+#animationPopup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5000;
+  overflow: hidden;
+  pointer-events: none; /* se puede scrollear página */
+}
 
+/* Contenedor de cartas */
+#animationContainer {
+  position: relative;
+  width: 260px;
+  height: 340px;
+  perspective: 1000px;
+}
+
+/* Carta animada */
+.animated-card {
+  position: absolute;
+  width: 220px;
+  height: 300px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  overflow: hidden;
+  opacity: 0;
+  transform: scale(0.7) translateY(40px) rotateY(15deg);
+  transition: transform 0.6s ease, opacity 0.6s ease;
+}
+
+/* Imagen y nombre */
+.animated-card img {
+  width: 80%;
+  height: 60%;
+  object-fit: contain;
+  margin-top: 10px;
+}
+.animated-card h3 {
+  margin: 5px 0;
+  color: #fff;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+}
+
+/* Halo MVP pulsante */
+.mvp-halo-anim {
+  position: absolute;
+  top: -10px; left: -10px;
+  width: calc(100% + 20px);
+  height: calc(100% + 20px);
+  border-radius: 18px;
+  background: radial-gradient(circle, gold 0%, rgba(255, 215, 0,0) 70%);
+  filter: blur(12px);
+  animation: haloPulse 2s infinite ease-in-out;
+  z-index: -1;
+}
+
+/* Badge MVP */
+.mvp-badge-anim {
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  background: linear-gradient(135deg, gold, #ff9800);
+  color: #000;
+  font-weight: 900;
+  font-size: 11px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  transform: rotate(-10deg);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}
+
+/* Partículas flotando */
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: gold;
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: floatParticles 6s linear infinite;
+}
+
+@keyframes haloPulse {
+  0%, 100% { opacity: 0.4; transform: scale(0.95); }
+  50% { opacity: 0.9; transform: scale(1.1); }
+}
+
+@keyframes floatParticles {
+  0% { transform: translateY(100%) translateX(0) rotate(0deg); opacity:0; }
+  20% { opacity:1; }
+  100% { transform: translateY(-20%) translateX(50px) rotate(360deg); opacity:0; }
+}
  
 </style>
 </head>
@@ -578,6 +685,10 @@ Seguirnos en nuestra cuenta de <a href="https://www.tiktok.com/@poblamar.league"
     <span class="close" onclick="closeModal()">✖</span>
     <div id="modalBody"></div>
   </div>
+</div>
+
+<div id="animationPopup" style="display:none;">
+  <div id="animationContainer"></div>
 </div>
 
 </div>
@@ -849,7 +960,6 @@ card.onclick = () => openModal(p);
 grid.appendChild(card);
   });
 }
-
 
 
 function openModal(p){
@@ -1223,7 +1333,80 @@ document.getElementById('addToCalendar').addEventListener('click', () => {
   window.open(gcUrl, '_blank');
 });
 
+function showAnimationPopup(jornadaNum) {
+  const overlay = document.getElementById('animationPopup');
+  const container = document.getElementById('animationContainer');
+  container.innerHTML = ''; 
+  overlay.style.display = 'flex';
 
+  // Crear partículas
+  for(let i=0; i<25; i++){
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random()*100 + '%';
+    p.style.animationDelay = (Math.random()*6)+'s';
+    p.style.width = p.style.height = (Math.random()*6+2)+'px';
+    container.appendChild(p);
+  }
+
+  const playersToShow = players
+    .filter(p => p.jornadas[jornadaNum] && p.jornadas[jornadaNum].puntos !== undefined)
+    .sort((a,b) => a.jornadas[jornadaNum].puntos - b.jornadas[jornadaNum].puntos);
+
+  let index = 0;
+
+  function showNext(){
+    if(index >= playersToShow.length){
+      setTimeout(() => overlay.style.display='none', 500);
+      return;
+    }
+
+    const p = playersToShow[index];
+    const puntos = p.jornadas[jornadaNum].puntos;
+    const esMVP = p.jornadas[jornadaNum].mvp;
+
+    const card = document.createElement('div');
+    card.className = 'animated-card';
+    card.innerHTML = `
+      <img src="${p.foto}">
+      <h3>${p.nombre}</h3>
+      <div class="points-square" style="background:${puntosColor(p)}">${puntos}</div>
+    `;
+
+    if(esMVP){
+      const halo = document.createElement('div');
+      halo.className = 'mvp-halo-anim';
+      card.appendChild(halo);
+
+      const badge = document.createElement('div');
+      badge.className = 'mvp-badge-anim';
+      badge.textContent = 'MVP J'+jornadaNum;
+      card.appendChild(badge);
+    }
+
+    container.appendChild(card);
+
+    setTimeout(()=>{
+      card.style.opacity = 1;
+      card.style.transform = 'scale(1) translateY(0) rotateY(0deg)';
+    },50);
+
+    const displayTime = esMVP ? 3000 : 1000;
+    setTimeout(()=>{
+      index++;
+      showNext();
+    }, displayTime);
+  }
+
+  showNext();
+}
+
+}
+
+// Conectar al botón Ver
+document.getElementById('verJ2Btn').addEventListener('click', ()=>{
+  showAnimationPopup(2);
+});
 
 </script>
 </body>
