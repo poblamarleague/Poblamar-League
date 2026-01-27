@@ -245,23 +245,6 @@ input,select{padding:8px 12px;font-size:14px;border-radius:6px;border:1px solid 
   animation: mvpBorder 3s linear infinite;
 }
 
-/* Flecha que indica estado de forma */
-.arrow-indicator {
-  position: absolute;
-  top: 5px;        /* ajusta según la cabeza */
-  left: 50%;
-  transform: translateX(-50%) rotate(0deg);
-  width: 0;
-  height: 0;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-bottom: 12px solid #2196f3; /* color dinámico */
-  z-index: 2;
-  transition: transform 0.3s ease, border-bottom-color 0.3s ease;
-}
-
-
-
 /* Animaciones */
 @keyframes haloPulse {
   0% { opacity: 0.4; transform: scale(0.96); }
@@ -793,32 +776,6 @@ let jornadaSeleccionada = null;
   return totales;
 }
 
-  function puntosRecientes(p){
-  // Obtenemos las últimas jornadas con puntos definidos
-  const jornadas = Object.values(p.jornadas)
-                        .filter(j => j.puntos !== undefined);
-
-  if(jornadas.length === 0) return null;
-
-  // Tomamos hasta las últimas 3 jornadas jugadas
-  const recientes = jornadas.slice(-3);
-
-  // Promedio de puntos
-  const sum = recientes.reduce((a,b)=>a+b.puntos,0);
-  return sum / recientes.length;
-}
-
-function flechaRendimiento(p) {
-  const prom = puntosRecientes(p);
-  if(prom === null) return {deg: 0, color: '#9e9e9e'}; // gris si no jugó
-
-  if(prom < 1) return {deg: 180, color:'#f44336'};        // ↓ rojo
-  if(prom < 5) return {deg: 135, color:'#ff9800'};       // ↘ naranja
-  if(prom < 9) return {deg: 90, color:'#ffeb3b'};        // → amarillo
-  if(prom < 12) return {deg: 45, color:'#4caf50'};       // ↗ verde
-  return {deg: 0, color:'#2196f3'};                      // ↑ azul
-}
-
 
 // Color según puntos
 function puntosColor(p){
@@ -872,12 +829,6 @@ card.innerHTML = `
   <div class="stats"><b>${p.posicion}</b></div>
   <div class="points-square" style="background:${color}">${puntos}</div>
 `;
-    const {deg, color} = flechaRendimiento(p);
-
-card.innerHTML += `
-  <div class="arrow-indicator" style="transform: translateX(-50%) rotate(${deg}deg); border-bottom-color: ${arrowColor};"></div>
-`;
-
 ;
    if (esMVP) {
     
