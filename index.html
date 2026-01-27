@@ -485,17 +485,6 @@ Seguirnos en nuestra cuenta de <a href="https://www.tiktok.com/@poblamar.league"
   </div>
 </div>
 
-<!-- Overlay para mostrar cartas una por una -->
-<div id="cardShowcase" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); justify-content:center; align-items:center; z-index:5000;">
-  <div id="showcaseCard" style="background:#1e1e1e; border-radius:16px; padding:20px; max-width:300px; text-align:center; opacity:0; transform:scale(0.5); transition: all 0.5s ease;">
-    <img id="showcaseImg" src="" style="width:100%; border-radius:12px; margin-bottom:10px;">
-    <h3 id="showcaseName" style="color:#fff; margin-bottom:5px;"></h3>
-    <p id="showcasePoints" style="color:gold; font-weight:bold; font-size:18px;"></p>
-    <div id="showcaseMVP" style="display:none; margin-top:10px; font-size:16px; color:#ffeb3b; font-weight:bold;">MVP</div>
-  </div>
-</div>
-
- 
 </div>
 
 <script>
@@ -965,61 +954,62 @@ window.addEventListener('load', () => {
 
   // Botón "Ver" filtra por J2, cierra popup y reproduce música
   verBtn.addEventListener('click', () => {
-  popup.style.display = 'none';
-  audio.play().catch(e => console.log("El audio necesita interacción del usuario", e));
-
-  jornadaSeleccionada = 2;
   document.getElementById('filterJornada').value = "2";
+  jornadaSeleccionada = 2;
 
   // Filtramos jugadores que jugaron
   let filtered = players.filter(p => p.jornadas[2] && p.jornadas[2].puntos !== undefined);
-  filtered.sort((a,b) => a.jornadas[2].puntos - b.jornadas[2].puntos);
 
-  // Mostrar overlay
-  const overlay = document.getElementById('cardShowcase');
-  const cardDiv = document.getElementById('showcaseCard');
-  const img = document.getElementById('showcaseImg');
-  const name = document.getElementById('showcaseName');
-  const points = document.getElementById('showcasePoints');
-  const mvpBadge = document.getElementById('showcaseMVP');
+  // Ordenamos de menos a más puntos
+  filtered.sort((a, b) => a.jornadas[2].puntos - b.jornadas[2].puntos);
 
-  overlay.style.display = 'flex';
+  // Limpiamos el grid
+  grid.innerHTML = '';
 
-  let index = 0;
-
-  function showNextCard() {
-    if(index >= filtered.length){
-      // Terminar animación: cerrar overlay y renderizar grid
-      setTimeout(() => { 
-        overlay.style.display='none'; 
-        renderPlayers(filtered); 
-      }, 1000);
-      return;
-    }
-
-    const p = filtered[index];
-    img.src = p.foto;
-    name.textContent = p.nombre;
-    points.textContent = `Puntos: ${p.jornadas[2].puntos}`;
-    mvpBadge.style.display = p.jornadas[2].mvp ? 'block' : 'none';
-
-    // Reset animación
-    cardDiv.style.opacity = '0';
-    cardDiv.style.transform = 'scale(0.5)';
-
-    // Animate in
+  // Animación de aparición
+  filtered.forEach((p, index) => {
     setTimeout(() => {
-      cardDiv.style.opacity = '1';
-      cardDiv.style.transform = 'scale(1)';
-    }, 50);
+      const puntos = p.jornadas[2].puntos;
+      const esMVP = p.jornadas[2].mvp;
+      const color = puntosColor(p);
 
-    index++;
-    setTimeout(showNextCard, 1500); // cada carta dura 1.5s
-  }
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.style.opacity = '0';          // empieza invisible
+      card.style.transform = 'translateY(30px)'; // empieza abajo
 
-  showNextCard();
-});
+      card.innerHTML = `
+        <img src="${p.foto}">
+        <h3>${p.nombre}</h3>
+        <div class="stats"><b>${p.posicion}</b></div>
+        <div class="points-square" style="background:${color}">${puntos}</div>
+      `;
 
+      card.onclick = () => openModal(p);
+      grid.appendChild(card);
+
+      // Animación fade + subida
+      setTimeout(() => {
+        card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }, 50);
+
+      // Si es MVP, añadir efecto especial al final
+      if (esMVP) {
+        setTimeout(() => {
+          card.classList.add('mvp');
+          card.innerHTML += `
+            <div class="mvp-wrapper">
+              <div class="mvp-halo"></div>
+              <div class="mvp-badge">MVP J2</div>
+            </div>
+          `;
+        }, 600); // halo aparece después del fade
+      }
+
+    }, index * 250); // cada carta aparece 250ms después
+  });
 
   // Cerrar popup y reproducir música
   popup.style.display = 'none';
