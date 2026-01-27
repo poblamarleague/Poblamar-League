@@ -276,6 +276,10 @@ input,select{padding:8px 12px;font-size:14px;border-radius:6px;border:1px solid 
   color: #000;
 }
 
+ .card {
+  transition: transform 0.5s ease, opacity 0.5s ease, box-shadow 0.2s;
+}
+
  
 </style>
 </head>
@@ -950,12 +954,68 @@ window.addEventListener('load', () => {
 
   // Botón "Ver" filtra por J2, cierra popup y reproduce música
   verBtn.addEventListener('click', () => {
-    document.getElementById('filterJornada').value = "2";
-    jornadaSeleccionada = 2;
-    filterAndRender();
-    popup.style.display = 'none';
-    audio.play().catch(e => console.log("El audio necesita interacción del usuario", e));
+  document.getElementById('filterJornada').value = "2";
+  jornadaSeleccionada = 2;
+
+  // Filtramos jugadores que jugaron
+  let filtered = players.filter(p => p.jornadas[2] && p.jornadas[2].puntos !== undefined);
+
+  // Ordenamos de menos a más puntos
+  filtered.sort((a, b) => a.jornadas[2].puntos - b.jornadas[2].puntos);
+
+  // Limpiamos el grid
+  grid.innerHTML = '';
+
+  // Animación de aparición
+  filtered.forEach((p, index) => {
+    setTimeout(() => {
+      const puntos = p.jornadas[2].puntos;
+      const esMVP = p.jornadas[2].mvp;
+      const color = puntosColor(p);
+
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.style.opacity = '0';          // empieza invisible
+      card.style.transform = 'translateY(30px)'; // empieza abajo
+
+      card.innerHTML = `
+        <img src="${p.foto}">
+        <h3>${p.nombre}</h3>
+        <div class="stats"><b>${p.posicion}</b></div>
+        <div class="points-square" style="background:${color}">${puntos}</div>
+      `;
+
+      card.onclick = () => openModal(p);
+      grid.appendChild(card);
+
+      // Animación fade + subida
+      setTimeout(() => {
+        card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }, 50);
+
+      // Si es MVP, añadir efecto especial al final
+      if (esMVP) {
+        setTimeout(() => {
+          card.classList.add('mvp');
+          card.innerHTML += `
+            <div class="mvp-wrapper">
+              <div class="mvp-halo"></div>
+              <div class="mvp-badge">MVP J2</div>
+            </div>
+          `;
+        }, 600); // halo aparece después del fade
+      }
+
+    }, index * 250); // cada carta aparece 250ms después
   });
+
+  // Cerrar popup y reproducir música
+  popup.style.display = 'none';
+  audio.play().catch(e => console.log("El audio necesita interacción del usuario", e));
+});
+
 
   // Cruz para cerrar sin filtrar
   closeBtn.addEventListener('click', () => {
