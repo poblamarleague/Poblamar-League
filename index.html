@@ -389,12 +389,11 @@ input,select{padding:8px 12px;font-size:14px;border-radius:6px;border:1px solid 
 }
 
 #animationContainer {
-  position: absolute;
+  position: fixed;
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  pointer-events: none;
 }
+
 
 
 
@@ -495,10 +494,17 @@ input,select{padding:8px 12px;font-size:14px;border-radius:6px;border:1px solid 
 
 /* ===== CARTA ANIMADA: MISMAS DIMENSIONES QUE EL GRID ===== */
 .card-anim {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: 220px;
+  height: 300px;
   opacity: 0;
-  transform: translateY(40px);
+  transform: translate(-50%, -50%) translateY(40px);
   transition: transform 0.5s ease, opacity 0.5s ease;
+  z-index: 6000;
 }
+
 
 
 
@@ -1431,12 +1437,6 @@ requestAnimationFrame(() => {
   card.style.transform = 'translate(-50%, -50%)';
 });
 
-
-
-    setTimeout(()=>{
-      card.style.opacity = 1;
-      card.style.transform = 'scale(1) translateY(0) rotateY(0deg)';
-    },50);
 
     const displayTime = esMVP ? 5000 : 2600;
     setTimeout(()=>{
